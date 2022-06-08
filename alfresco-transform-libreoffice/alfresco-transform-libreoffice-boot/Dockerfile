@@ -1,12 +1,12 @@
-# Image provides a container in which to run LibreOffice transformations for Alfresco Content Services.
+# Image provides a container in which to run OpenOffice transformations for Alfresco Content Services.
 
-# LibreOffice is from The Document Foundation. See the license at https://www.libreoffice.org/download/license/ or in /libreoffice.txt.
+# OpenOffice is from Apache Foundation. See the license at https://www.openoffice.org/license.html .
 
 FROM alfresco/alfresco-base-java:jre11-centos7-202204121522
 
-ARG LIBREOFFICE_VERSION=7.2.5
+ARG LIBREOFFICE_VERSION=4.1.12
 
-ENV LIBREOFFICE_RPM_URL=https://nexus.alfresco.com/nexus/service/local/repositories/thirdparty/content/org/libreoffice/libreoffice-dist/${LIBREOFFICE_VERSION}/libreoffice-dist-${LIBREOFFICE_VERSION}-linux.gz
+ENV LIBREOFFICE_RPM_URL=https://sourceforge.net/projects/openofficeorg.mirror/files/4.1.12/binaries/es/Apache_OpenOffice_4.1.12_Linux_x86-64_install-rpm_es.tar.gz
 ENV JAVA_OPTS=""
 
 # Set default user information
@@ -21,10 +21,10 @@ RUN ln /${env.project_artifactId}-${env.project_version}.jar /usr/bin/${env.proj
     yum install -y cairo cups-libs libSM libGLU && \
     test -f libreoffice-dist-${LIBREOFFICE_VERSION}-linux.gz && \
     ln -s libreoffice-dist-${LIBREOFFICE_VERSION}-linux.gz libreoffice-dist-linux.gz || \
-    curl -s -S $LIBREOFFICE_RPM_URL      -o libreoffice-dist-linux.gz && \
+    curl -L -s -S $LIBREOFFICE_RPM_URL      -o libreoffice-dist-linux.gz && \
     tar xzf libreoffice-dist-linux.gz && \
-    yum localinstall -y LibreOffice*/RPMS/*.rpm && \
-    rm -rf libreoffice-dist-*linux.gz LibreOffice_*_Linux_x86-64_rpm && \
+    yum localinstall -y es/RPMS/*.rpm && \
+    rm -rf libreoffice-dist-*linux.gz es && \
     yum clean all
 
 ADD target/generated-resources/licenses              /licenses
